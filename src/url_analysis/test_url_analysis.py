@@ -1,4 +1,4 @@
-from extract_urls import extract_urls
+from extract_url import extract_urls
 
 email = """
 Your account has been suspended.
