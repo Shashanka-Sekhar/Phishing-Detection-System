@@ -14,7 +14,7 @@ domain = get_sender_domain(sender)
 
 age = get_domain_age(domain)
 
-risk = calculate_behavior_risk(age)
+risk = calculate_behavior_risk(age, domain)
 
 print("Sender:", sender)
 print("Domain:", domain)
