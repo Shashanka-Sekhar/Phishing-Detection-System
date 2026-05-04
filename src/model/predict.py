@@ -8,6 +8,7 @@ model = DistilBertForSequenceClassification.from_pretrained(model_path)
 
 model.eval()
 
+
 def predict_email(email):
 
     inputs = tokenizer(
@@ -22,17 +23,29 @@ def predict_email(email):
         outputs = model(**inputs)
 
     logits = outputs.logits
+
+    probs = torch.nn.functional.softmax(logits, dim=1)
+
+    phishing_score = probs[0][1].item()  # class 1 = phishing
+
     prediction = torch.argmax(logits).item()
 
     if prediction == 1:
-        return "Phishing Email"
+        label = "Phishing Email"
     else:
-        return "Safe Email"
+        label = "Safe Email"
+
+    return {
+        "label": label,
+        "score": phishing_score
+    }
 
 
+# Test
 email = "Your account has been suspended. Click here to verify."
 
 result = predict_email(email)
 
 print("Email:", email)
-print("Prediction:", result)
+print("Prediction:", result["label"])
+print("Phishing Probability:", round(result["score"], 3))
