@@ -1,7 +1,7 @@
 import torch
 from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
 
-model_path = "models/phishing_email_model"
+model_path = "../models/phishing_email_model"
 
 tokenizer = DistilBertTokenizer.from_pretrained(model_path)
 model = DistilBertForSequenceClassification.from_pretrained(model_path)
@@ -41,11 +41,11 @@ def predict_email(email):
     }
 
 
-# Test
-email = "Your account has been suspended. Click here to verify."
+if __name__ == "__main__":
+    email = "Your account has been suspended. Click here to verify."
 
-result = predict_email(email)
+    result = predict_email(email)
 
-print("Email:", email)
-print("Prediction:", result["label"])
-print("Phishing Probability:", round(result["score"], 3))
+    print("Email:", email)
+    print("Prediction:", result["label"])
+    print("Phishing Probability:", round(result["score"], 3))
