@@ -1,67 +1,66 @@
-from model.predict import predict_email
+from src.model.predict import predict_email
+from src.explainability.shap_explainer import explain_email
+from src.url_analysis.extract_url import extract_urls
+from src.url_analysis.url_features import extract_url_features
+from src.url_analysis.domain_info import get_domain
+from src.url_analysis.url_risk_score import calculate_url_risk
 
-from url_analysis.extract_url import extract_urls
-from url_analysis.url_features import extract_url_features
-from url_analysis.domain_info import get_domain
-from url_analysis.url_risk_score import calculate_url_risk
+from src.domain_similarity.domain_matcher import detect_typosquatting
 
-from domain_similarity.domain_matcher import detect_typosquatting
+from src.behavior_analysis.domain_age import get_domain_age
+from src.behavior_analysis.behavior_risk_score import calculate_behavior_risk
 
-from behavior_analysis.domain_age import get_domain_age
-from behavior_analysis.behavior_risk_score import calculate_behavior_risk
-
-from hybrid_analysis.hybrid_score import hybrid_analysis
-
-email = """
-From: support@paypal-secure-login.ru
-
-Your account has been suspended.
-Click here to verify: https://g00gle-login.com
-"""
-
-bert_result = predict_email(email)
-bert_score = bert_result["score"]
-
-urls = extract_urls(email)
-
-url_score = 0
-domain_result = {"is_suspicious": False}
-behavior_score = 0
+from src.hybrid_analysis.hybrid_score import hybrid_analysis
 
 
-if urls:
+def run_pipeline(email):
 
-    url = urls[0]
+    # Phase 2
+    bert_result = predict_email(email)
+    bert_score = bert_result["score"]
 
-    features = extract_url_features(url)
+    # Phase 3
+    urls = extract_urls(email)
 
-    domain = get_domain(url)
+    url_score = 0
+    domain_result = {"is_suspicious": False}
+    behavior_score = 0
 
-    url_score = calculate_url_risk(features, domain)
+    if urls:
 
-    domain_result = detect_typosquatting(domain)
+        url = urls[0]
 
-    age = get_domain_age(domain)
+        features = extract_url_features(url)
 
-    behavior_score = calculate_behavior_risk(age, domain)
+        domain = get_domain(url)
 
-final_result = hybrid_analysis(
-    bert_score,
-    url_score,
-    domain_result,
-    behavior_score
-)
+        url_score = calculate_url_risk(features, domain)
 
+        # Phase 4
+        domain_result = detect_typosquatting(domain)
 
-print("\n========== FINAL PHISHING ANALYSIS ==========")
+        # Phase 5
+        age = get_domain_age(domain)
 
-print("BERT Score:", bert_score)
+        behavior_score = calculate_behavior_risk(age, domain)
 
-print("URL Score:", url_score)
+    # Phase 6
+    final_result = hybrid_analysis(
+        bert_score,
+        url_score,
+        domain_result,
+        behavior_score
+    )
+    if final_result["prediction"] == "PHISHING":
+        shap_html = explain_email(email)
+    else:
+        shap_html = ""
 
-print("Domain Result:", domain_result)
-
-print("Behavior Score:", behavior_score)
-
-print("\nFINAL RESULT:")
-print(final_result)
+    return {
+        "bert_score": bert_score,
+        "url_score": url_score,
+        "domain_result": domain_result,
+        "behavior_score": behavior_score,
+        "final_result": final_result,
+        "shap_html": shap_html
+    }

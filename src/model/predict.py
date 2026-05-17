@@ -1,9 +1,21 @@
 import torch
-from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
+import os
 
-model_path = "../models/phishing_email_model"
+from transformers import (
+    DistilBertTokenizer,
+    DistilBertForSequenceClassification
+)
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+model_path = os.path.abspath(
+    os.path.join(BASE_DIR, "../../models/phishing_email_model")
+)
+
+print("MODEL PATH:", model_path)
 
 tokenizer = DistilBertTokenizer.from_pretrained(model_path)
+
 model = DistilBertForSequenceClassification.from_pretrained(model_path)
 
 model.eval()

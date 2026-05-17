@@ -1,5 +1,10 @@
+fastapi
+uvicorn
 torch
 transformers
-datasets
-scikit-learn
 pandas
+scikit-learn
+tldextract
+python-Levenshtein
+python-whois
+beautifulsoup4

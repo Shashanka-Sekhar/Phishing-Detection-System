@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.jsdelivr.net/npm/shapjs@latest/dist/shap.min.js"></script>
+<head>
+
+    <title>AI Phishing Detector</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>AI Phishing Email Detector</h1>
+
+        <textarea
+            id="emailInput"
+            placeholder="Paste suspicious email here..."
+        ></textarea>
+
+        <button onclick="analyzeEmail()">
+            Analyze Email
+        </button>
+
+        <div id="loading"></div>
+
+        <div id="result"></div>
+        <div id="shap"></div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
