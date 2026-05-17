@@ -4,8 +4,8 @@ async function analyzeEmail() {
   document.getElementById("loading").innerHTML = "Analyzing...";
 
   try {
-    // Vercel backend route
-    const response = await fetch("/api/analyze", {
+    // Local FastAPI backend
+    const response = await fetch("http://127.0.0.1:8000/analyze", {
       method: "POST",
 
       headers: {
@@ -26,7 +26,7 @@ async function analyzeEmail() {
 
     document.getElementById("loading").innerHTML = "";
 
-    // Main result display
+    // Main Result Display
     document.getElementById("result").innerHTML = `
 
             <h2>
@@ -38,7 +38,9 @@ async function analyzeEmail() {
                 ${data.final_result.final_score}
             </p>
 
-            <h3>Reasons</h3>
+            <h3>
+                Reasons
+            </h3>
 
             <ul>
                 ${data.final_result.reasons
@@ -64,9 +66,10 @@ async function analyzeEmail() {
                     `
                 : ""
             }
+
         `;
 
-    // SHAP Explainability Output (optional)
+    // SHAP Explainability Output (Optional)
     if (data.shap_html && document.getElementById("shap")) {
       document.getElementById("shap").innerHTML = data.shap_html;
     }
@@ -82,7 +85,8 @@ async function analyzeEmail() {
             </h2>
 
             <p>
-                Please check Vercel deployment logs.
+                Make sure FastAPI is running on:
+                http://127.0.0.1:8000
             </p>
 
         `;
