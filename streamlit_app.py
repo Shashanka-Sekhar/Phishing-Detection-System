@@ -65,8 +65,10 @@ if st.button("Analyze Email"):
                 result["domain_result"]["suggested_domain"]
             )
 
-        st.subheader("Why was this flagged?")
+        if prediction != "SAFE" and result["user_explanation"]:
 
-        for item in result["user_explanation"]:
+            st.subheader("Why was this flagged?")
 
-            st.warning(item)
+            for item in result["user_explanation"]:
+
+                st.warning(item)
