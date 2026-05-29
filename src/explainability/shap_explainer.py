@@ -11,7 +11,6 @@ classifier = pipeline(
 
 explainer = shap.Explainer(classifier)
 
-
 def explain_email(text):
 
     shap_values = explainer([text])

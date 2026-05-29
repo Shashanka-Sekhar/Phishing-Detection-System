@@ -11,6 +11,7 @@ from src.behavior_analysis.domain_age import get_domain_age
 from src.behavior_analysis.behavior_risk_score import calculate_behavior_risk
 
 from src.hybrid_analysis.hybrid_score import hybrid_analysis
+from src.explainability.explanation_generator import generate_explanation
 
 
 def run_pipeline(email):
@@ -56,11 +57,19 @@ def run_pipeline(email):
     else:
         shap_html = ""
 
+    user_explanation = generate_explanation(
+        email,
+        bert_score,
+        domain_result,
+        final_result
+    )
+
     return {
-        "bert_score": bert_score,
-        "url_score": url_score,
-        "domain_result": domain_result,
-        "behavior_score": behavior_score,
-        "final_result": final_result,
-        "shap_html": shap_html
-    }
+    "bert_score": bert_score,
+    "url_score": url_score,
+    "domain_result": domain_result,
+    "behavior_score": behavior_score,
+    "final_result": final_result,
+    "shap_html": shap_html,
+    "user_explanation": user_explanation
+}
