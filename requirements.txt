@@ -3,9 +3,12 @@ uvicorn
 torch
 transformers
 pandas
+numpy
 scikit-learn
 tldextract
 python-Levenshtein
 python-whois
 beautifulsoup4
 shap
+matplotlib
+ipython
