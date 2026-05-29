@@ -58,17 +58,34 @@ def find_closest_domain(input_domain):
 
 def detect_typosquatting(input_domain):
 
+    input_domain = input_domain.lower()
+
+    # Exact trusted domain
+    if input_domain in trusted_domains:
+
+        return {
+            "is_suspicious": False,
+            "suggested_domain": None,
+            "distance": 0,
+            "show_suggestion": False
+        }
+
     closest_domain, distance = find_closest_domain(input_domain)
 
-    if distance <= 3:
+    # Likely typo-squatting
+    if distance <= 2:
+
         return {
             "is_suspicious": True,
             "suggested_domain": closest_domain,
-            "distance": distance
+            "distance": distance,
+            "show_suggestion": True
         }
 
+    # Domain is too different from any trusted domain
     return {
-        "is_suspicious": True,
-        "suggested_domain": closest_domain,
-        "distance": distance
+        "is_suspicious": False,
+        "suggested_domain": None,
+        "distance": distance,
+        "show_suggestion": False
     }

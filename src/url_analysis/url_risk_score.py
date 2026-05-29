@@ -1,11 +1,14 @@
+from pyexpat import features
+
+
 def calculate_url_risk(features, domain):
 
     score = 0
 
-    if features["url_length"] > 30:
+    if features["url_length"] > 75:
         score += 0.2
 
-    if features["num_dots"] >= 2:
+    if features["num_dots"] >= 4:
         score += 0.2
 
     if features["num_hyphens"] >= 1:

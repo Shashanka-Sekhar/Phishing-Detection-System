@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🛡️ PhishBERT: AI Phishing Email Detector")
+st.title("🛡️ AI based Phishing Email Detection System with Behavioral Analysis and Explainable Intelligence")
 
 st.write(
     "Detect phishing emails using DistilBERT, URL Analysis, "
@@ -53,11 +53,12 @@ if st.button("Analyze Email"):
 
         if reasons:
             for reason in reasons:
-                st.write("•", reason)
+                st.write(f"• {reason}")
         else:
             st.write("No suspicious indicators found.")
 
-        if result["domain_result"].get("is_suspicious"):
+        # Show suggested website only when a meaningful match exists
+        if result["domain_result"].get("show_suggestion"):
 
             st.subheader("Suggested Legitimate Website")
 
@@ -65,6 +66,7 @@ if st.button("Analyze Email"):
                 result["domain_result"]["suggested_domain"]
             )
 
+        # Show detailed explanation only for suspicious emails
         if prediction != "SAFE" and result["user_explanation"]:
 
             st.subheader("Why was this flagged?")
@@ -72,3 +74,10 @@ if st.button("Analyze Email"):
             for item in result["user_explanation"]:
 
                 st.warning(item)
+
+        # Optional message for SAFE emails
+        if prediction == "SAFE":
+
+            st.success(
+                "No significant phishing indicators were detected."
+            )
