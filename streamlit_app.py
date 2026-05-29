@@ -222,7 +222,7 @@ Tapan Kumar Ojha
 Aurobindo Kumar Biswal
 
 Guided By:
-Dr. Rabi Prakash
+Dr. Ravi Prakash
 
 ITER, Siksha 'O' Anusandhan University
 """, language="bash")
