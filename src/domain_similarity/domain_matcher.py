@@ -144,7 +144,7 @@ def detect_typosquatting(input_domain):
     closest_domain, distance = find_closest_domain(input_domain)
 
     # Likely typo-squatting
-    if distance <= 2:
+    if distance <= 4:
 
         return {
             "is_suspicious": True,
