@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🛡️ AI based Phishing Email Detection System with Behavioral Analysis and Explainable Intelligence")
+st.title("🛡️ PhishBERT Phishing Email Detection")
 
 st.write(
     "Detect phishing emails using DistilBERT, URL Analysis, "
